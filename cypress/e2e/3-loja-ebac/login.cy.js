@@ -1,9 +1,10 @@
 ///<reference types="cypress"/>
+const perfil = require('../../fixtures/perfil.json')
 
 describe('Funcionalidade: login', () => {
 
     beforeEach(() => {
-        cy.visit('http://lojaebac.ebaconline.art.br/minha-conta/')
+        cy.visit('minha-conta')
     });
 
     afterEach(() => {
@@ -33,4 +34,19 @@ describe('Funcionalidade: login', () => {
         //cy.get('.woocommerce-error > li').should('exist')
     })
 
-})
+    it('Deve fazer login com sucesso - Usando massa de dados', () => {
+        cy.get('#username').type(perfil.usuario)
+        cy.get('#password').type(perfil.senha)
+        cy.get('.woocommerce-form > .button').click()
+        cy.get('.woocommerce-MyAccount-content > :nth-child(2)').should('contain' , 'Olá, angelo.teste (não é angelo.teste? Sair)')
+    });
+
+    it.only('Deve fazer login com sucesso - Usando fixture', () => {
+        cy.fixture('perfil').then( dados => {
+            cy.get('#username').type(dados.usuario , { log: false })
+            cy.get('#password').type(dados.senha , { log: false })
+            cy.get('.woocommerce-form > .button').click()
+            cy.get('.woocommerce-MyAccount-content > :nth-child(2)').should('contain' , 'Olá, angelo.teste (não é angelo.teste? Sair)')   
+        })
+    })
+})    
