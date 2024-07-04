@@ -8,7 +8,7 @@ describe('Funcionalidade: login', () => {
     });
 
     afterEach(() => {
-        cy.screenshot()
+       // cy.screenshot()
     });
 
     it('Deve fazer login com sucesso', () => {
@@ -23,7 +23,7 @@ describe('Funcionalidade: login', () => {
         cy.get('#password').type('teste@123')
         cy.get('.woocommerce-form > .button').click()
         cy.get('.woocommerce-error > li').should('contain', 'Endereço de e-mail desconhecido.')
-        //cy.get('.woocommerce-error > li').should('exist')
+        // cy.get('.woocommerce-error > li').should('exist')
     });
 
     it('Deve exibir uma mensagem de erro ao inserir senha inválida', () => {
@@ -31,7 +31,7 @@ describe('Funcionalidade: login', () => {
         cy.get('#password').type('teste@321')
         cy.get('.woocommerce-form > .button').click()
         cy.get('.woocommerce-error > li').should('contain', 'Erro: A senha fornecida para o e-mail angelo.teste@teste.com.br está incorreta.')
-        //cy.get('.woocommerce-error > li').should('exist')
+        // cy.get('.woocommerce-error > li').should('exist')
     })
 
     it('Deve fazer login com sucesso - Usando massa de dados', () => {
@@ -41,7 +41,7 @@ describe('Funcionalidade: login', () => {
         cy.get('.woocommerce-MyAccount-content > :nth-child(2)').should('contain' , 'Olá, angelo.teste (não é angelo.teste? Sair)')
     });
 
-    it.only('Deve fazer login com sucesso - Usando fixture', () => {
+    it('Deve fazer login com sucesso - Usando fixture', () => {
         cy.fixture('perfil').then( dados => {
             cy.get('#username').type(dados.usuario , { log: false })
             cy.get('#password').type(dados.senha , { log: false })
@@ -49,4 +49,10 @@ describe('Funcionalidade: login', () => {
             cy.get('.woocommerce-MyAccount-content > :nth-child(2)').should('contain' , 'Olá, angelo.teste (não é angelo.teste? Sair)')   
         })
     })
+
+    it.only('Deve fazer login usando Comandos Customizados', () => {
+        cy.login('angelo.teste@teste.com.br', 'teste@123')
+        cy.get('.woocommerce-MyAccount-content > :nth-child(2)').should('contain' , 'Olá, angelo.teste (não é angelo.teste? Sair)')
+        
+    });
 })    
